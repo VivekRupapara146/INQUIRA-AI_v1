@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Inquira AI — Autonomous Research. Verified Insights.</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <div class="eyebrow">Inquira AI</div>
+      <div class="sidebar-tagline">Research history</div>
+    </div>
+    <div id="historyList" class="history-list">
+      <div class="history-empty">No past research yet — run your first query to see it here.</div>
+    </div>
+  </aside>
+
+  <main id="main">
+    <div class="query-bar">
+      <input type="text" id="queryInput" placeholder="Ask a research question…" autocomplete="off" />
+      <button id="runBtn">Research</button>
+    </div>
+
+    <div id="thread">
+      <div class="thread-empty" id="threadEmpty">
+        <div class="eyebrow">Autonomous Research. Verified Insights.</div>
+        <p>Ask a question below. Watch the agent plan, gather, and reason before it answers — and every run stays in your history on the left.</p>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<template id="cardTemplate">
+  <article class="card">
+    <div class="card-header">
+      <div class="card-query"></div>
+      <div class="card-confidence"></div>
+    </div>
+    <div class="card-trace"></div>
+    <div class="card-body"></div>
+    <div class="card-actions"></div>
+  </article>
+</template>
+
+<script src="app.js"></script>
+</body>
+</html>

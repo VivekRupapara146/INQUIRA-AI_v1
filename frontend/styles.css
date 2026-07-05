@@ -1,0 +1,275 @@
+:root {
+  --ink: #10131a;
+  --ink-raised: #161b24;
+  --ink-card: #141822;
+  --hairline: #262c38;
+  --text: #eae7e0;
+  --text-dim: #8b909c;
+  --amber: #e8a33d;
+  --teal: #5fa8a0;
+  --error: #d9776a;
+  --mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+  --serif: 'Georgia', 'Iowan Old Style', serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--ink);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+#app {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+/* ---------- Sidebar ---------- */
+
+#sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  background: var(--ink-raised);
+  border-right: 1px solid var(--hairline);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  padding: 1.4rem 1.3rem 1rem;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.sidebar-tagline {
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  margin-top: 0.5rem;
+}
+
+.history-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.6rem;
+}
+
+.history-empty {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  padding: 1rem 0.7rem;
+  line-height: 1.5;
+}
+
+.history-item {
+  padding: 0.7rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 0.3rem;
+  transition: background 0.15s ease;
+  border: 1px solid transparent;
+}
+
+.history-item:hover {
+  background: var(--ink-card);
+  border-color: var(--hairline);
+}
+
+.history-item.active {
+  background: var(--ink-card);
+  border-color: var(--teal);
+}
+
+.history-item-query {
+  font-size: 0.86rem;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 0.3rem;
+}
+
+.history-item-meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+
+.history-item-meta .conf {
+  color: var(--teal);
+}
+
+/* ---------- Main column ---------- */
+
+#main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.query-bar {
+  display: flex;
+  gap: 0.6rem;
+  padding: 1.2rem 2rem;
+  border-bottom: 1px solid var(--hairline);
+  background: var(--ink);
+  flex-shrink: 0;
+}
+
+input[type="text"] {
+  flex: 1;
+  background: var(--ink-raised);
+  border: 1px solid var(--hairline);
+  color: var(--text);
+  padding: 0.85rem 1.1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+input[type="text"]:focus { border-color: var(--teal); }
+
+button {
+  background: var(--amber);
+  color: #1a1305;
+  border: none;
+  padding: 0 1.6rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+button:hover { filter: brightness(1.08); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+#thread {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem 2rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.thread-empty {
+  max-width: 560px;
+  margin: 3rem auto 0;
+  text-align: center;
+}
+
+.thread-empty .eyebrow { display: block; margin-bottom: 0.8rem; font-size: 0.78rem; }
+.thread-empty p { color: var(--text-dim); line-height: 1.6; font-size: 0.92rem; }
+
+/* ---------- Cards ---------- */
+
+.card {
+  background: var(--ink-card);
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  padding: 1.3rem 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.card.from-history { border-color: var(--teal); }
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  border-bottom: 1px solid var(--hairline);
+  padding-bottom: 0.9rem;
+  margin-bottom: 0.9rem;
+}
+
+.card-query {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+}
+
+.card-confidence {
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  color: var(--teal);
+  white-space: nowrap;
+}
+
+/* live trace, shown while a run is in progress */
+.card-trace {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  display: none;
+}
+.card-trace.visible { display: block; margin-bottom: 0.9rem; }
+.card-trace .trace-line { padding: 0.2rem 0; }
+.card-trace .trace-line.current { color: var(--teal); }
+
+/* collapsed "N sources · M tools · confidence X%" summary chip */
+.trace-summary {
+  display: inline-flex;
+  gap: 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--text-dim);
+  background: var(--ink-raised);
+  border: 1px solid var(--hairline);
+  border-radius: 5px;
+  padding: 0.35rem 0.7rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+.trace-summary:hover { border-color: var(--teal); color: var(--teal); }
+
+.card-body h2 { font-family: var(--serif); font-weight: 400; font-size: 1.05rem; margin: 1.2rem 0 0.5rem; }
+.card-body h2:first-child { margin-top: 0; }
+.card-body p, .card-body li { line-height: 1.6; color: #d4d1c9; font-size: 0.92rem; }
+.card-body ul { padding-left: 1.2rem; margin: 0.3rem 0; }
+.card-body .refs { font-size: 0.78rem; color: var(--text-dim); word-break: break-all; }
+
+.card-actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--hairline);
+}
+
+.card-actions button {
+  background: transparent;
+  border: 1px solid var(--hairline);
+  color: var(--text);
+  font-size: 0.82rem;
+  padding: 0.5rem 1rem;
+}
+.card-actions button:hover { border-color: var(--teal); color: var(--teal); filter: none; }
+
+.card-error { color: var(--error); font-family: var(--mono); font-size: 0.85rem; }
+
+progress {
+  width: 100%;
+  height: 3px;
+  appearance: none;
+  border: none;
+  margin-top: 0.6rem;
+}
+progress::-webkit-progress-bar { background: var(--hairline); border-radius: 2px; }
+progress::-webkit-progress-value { background: var(--amber); border-radius: 2px; transition: width 0.3s ease; }
