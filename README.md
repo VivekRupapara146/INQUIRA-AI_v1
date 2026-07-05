@@ -159,6 +159,8 @@ Open `http://localhost:8000`.
 
 ## Known limitations / next steps
 
+- **Deployment roadmap** — the backend is fully functional for local execution. Streamlit deployment is currently being finalized to provide a publicly accessible demonstration.
+- **Database roadmap** — SQLite is intentionally used for the current assessment to keep the project lightweight and self-contained. Integration with MongoDB Atlas is in progress to support scalable persistence and future production-ready deployments.
 - **Evidence dedup and memory-similarity lookup are both lexical, not semantic** — near-duplicate paraphrases, or semantically-related-but-differently-worded past queries, can slip past matching. Would move to embedding cosine-similarity at scale.
 - **The scraper tool requires the planner to pass a real URL** as its search input; there's no automatic URL-discovery-then-scrape step yet.
 - **Reports created before the memory schema was widened** (to store the full report, not just a summary) can't be reopened from history — `GET /api/memory/{id}` correctly returns 404 for those rather than erroring, but the underlying content genuinely wasn't persisted at the time.
