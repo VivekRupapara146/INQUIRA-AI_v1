@@ -72,6 +72,109 @@ Every major decision is made dynamically by the LLM through LangGraph rather tha
 Built with **LangGraph** as a `StateGraph`, not a linear chain. The planner's tool selection and the reasoner's confidence score are LLM decisions that dynamically change control flow, demonstrating true operational autonomy.
 
 ### Workflow
+## System Workflow
+
+The following workflow illustrates how **Inquira AI** autonomously researches a topic, gathers evidence, reasons over the collected information, and generates a structured report.
+
+```text
+                               User Query
+                                    │
+                                    ▼
+                    ┌─────────────────────────────────┐
+                    │            Planner              │
+                    │ • Understand research objective │
+                    │ • Define scope                  │
+                    │ • Generate sub-questions        │
+                    │ • Select research tools         │
+                    │ • Retrieve relevant memory      │
+                    └───────────────┬─────────────────┘
+                                    │
+                                    ▼
+                 ┌─────────────────────────────────────┐
+                 │        Parallel Tool Executor       │
+                 │                                     │
+                 │  • Tavily Search                    │
+                 │  • ArXiv Papers                     │
+                 │  • Website Scraper                  │
+                 │                                     │
+                 │ Executes selected tools             │
+                 │ concurrently across multiple        │
+                 │ research sub-questions              │
+                 └───────────────┬─────────────────────┘
+                                 │
+                                 ▼
+                  ┌──────────────────────────────────┐
+                  │      Evidence Processing          │
+                  │                                  │
+                  │ • Remove duplicates              │
+                  │ • Rank by source reliability     │
+                  │ • Filter irrelevant evidence     │
+                  └───────────────┬──────────────────┘
+                                  │
+                                  ▼
+                  ┌──────────────────────────────────┐
+                  │          Reasoner Agent          │
+                  │                                  │
+                  │ • Detect agreements              │
+                  │ • Detect contradictions          │
+                  │ • Measure uncertainty            │
+                  │ • Calculate confidence score     │
+                  └───────────────┬──────────────────┘
+                                  │
+             confidence < threshold │
+            & iterations < max      │
+                                  ▼
+                   ┌────────────────────────────┐
+                   │ Continue Research          │
+                   │                            │
+                   │ Search the NEXT batch of   │
+                   │ sub-questions using the    │
+                   │ selected research tools    │
+                   └──────────────┬─────────────┘
+                                  │
+                                  └───────────────┐
+                                                  │
+                                                  ▼
+                                      Parallel Tool Executor
+
+If confidence is sufficient
+or maximum iterations reached
+                │
+                ▼
+      ┌────────────────────────────────────┐
+      │        Report Generator            │
+      │                                    │
+      │ • Executive Summary                │
+      │ • Key Findings                     │
+      │ • Detailed Analysis                │
+      │ • References                       │
+      │ • Actionable Insights              │
+      │ • Confidence Score                 │
+      └───────────────┬────────────────────┘
+                      │
+                      ▼
+      ┌────────────────────────────────────┐
+      │     SQLite Memory & History        │
+      │                                    │
+      │ • Store research query             │
+      │ • Store generated report           │
+      │ • Store references                 │
+      │ • Enable report reopening          │
+      │ • Provide context for future       │
+      │   research sessions                │
+      └────────────────────────────────────┘
+```
+
+### Workflow Summary
+
+1. **User submits a research query.**
+2. The **Planner Agent** determines the research objective, decomposes the task into sub-questions, retrieves relevant past research, and autonomously selects the most appropriate research tools.
+3. The **Tool Executor** gathers information concurrently from multiple external sources (Tavily, ArXiv, and Web Scraper).
+4. Retrieved evidence is **deduplicated, ranked, and filtered** before reasoning.
+5. The **Reasoner Agent** evaluates agreements, contradictions, uncertainty, and produces a confidence score.
+6. If confidence is below the configured threshold, the workflow loops back to the Tool Executor and researches the **next batch of sub-questions** instead of repeating previous searches.
+7. Once sufficient confidence is achieved, the **Report Generator** creates a structured research report with grounded citations.
+8. The completed report and metadata are stored in **SQLite**, allowing users to reopen previous research and providing optional context for future planning.
 
 ### Visual Diagram
 
