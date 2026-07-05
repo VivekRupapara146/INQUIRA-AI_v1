@@ -117,36 +117,51 @@ Early versions of this project only ever searched `sub_questions[0]`, silently d
 
 ## Project Structure
 
+```text
 app/
-├── main.py                    FastAPI app + lifespan (DB init/migration)
-├── config.py                   Typed settings from .env
+├── main.py                          # FastAPI application entry point and lifespan events
+├── config.py                        # Typed application settings loaded from .env
+│
 ├── api/
-│   └── routes.py                 /research, /research/stream (SSE),
-│                                   /memory/recent, /memory/{id}, /export/{fmt}
+│   └── routes.py                    # REST API endpoints:
+│                                    # /research
+│                                    # /research/stream (SSE)
+│                                    # /memory/recent
+│                                    # /memory/{id}
+│                                    # /export/{markdown|pdf}
+│
 ├── agents/
-│   ├── state.py                    Shared LangGraph state (TypedDict)
-│   ├── graph.py                     Graph wiring + conditional edge logic
-│   ├── planner.py                    Autonomous tool/scope decision + memory lookup
-│   ├── tool_executor.py               Parallel fan-out across tools AND sub-questions
-│   ├── evidence.py                     Dedup + rank + relevance filter
-│   ├── reasoner.py                      Agreement/contradiction analysis
-│   ├── report_generator.py               Structured report, grounded citations
-│   └── prompts.py                         Centralized prompt templates
-├── tools/                       ResearchTool ABC + Tavily/ArXiv/Scraper implementations
+│   ├── state.py                     # Shared LangGraph state (TypedDict)
+│   ├── graph.py                     # LangGraph workflow and conditional routing
+│   ├── planner.py                   # Autonomous research planning & tool selection
+│   ├── tool_executor.py             # Parallel execution across tools and sub-questions
+│   ├── evidence.py                  # Evidence deduplication, ranking & filtering
+│   ├── reasoner.py                  # Agreement, contradiction & confidence analysis
+│   ├── report_generator.py          # Structured report generation with grounded citations
+│   └── prompts.py                   # Centralized prompt templates
+│
+├── tools/
+│   ├── base.py                      # Abstract ResearchTool interface
+│   ├── tavily.py                    # Tavily Search integration
+│   ├── arxiv.py                     # ArXiv research integration
+│   └── scraper.py                   # Website content extraction
+│
 ├── services/
-│   ├── llm_client.py               Provider-agnostic (Gemini/OpenAI) structured-output
-│   │                                 client, with retry-on-transient-failure
-│   ├── memory_service.py            SQLite storage (full report + lexical similarity lookup)
-│   └── report_service.py             In-memory Markdown/PDF generation, no disk I/O
+│   ├── llm_client.py                # Provider-agnostic LLM client (Gemini/OpenAI)
+│   ├── memory_service.py            # SQLite storage & similarity-based retrieval
+│   └── report_service.py            # In-memory Markdown & PDF generation
+│
 ├── models/
-│   └── schemas.py                  All Pydantic contracts between layers
+│   └── schemas.py                   # Pydantic request/response and internal schemas
+│
 └── utils/
-└── logger.py
-frontend/
-├── index.html                  Structure only
-├── styles.css                   Sidebar + conversation-thread layout
-└── app.js                        History loading, streaming, export handling
+    └── logger.py                    # Centralized application logging
 
+frontend/
+├── index.html                       # Application layout
+├── styles.css                       # Responsive UI styling
+└── app.js                           # Client logic, SSE streaming, history & exports
+```
 ---
 
 ## Installation & Setup
