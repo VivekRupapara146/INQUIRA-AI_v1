@@ -166,65 +166,95 @@ frontend/
 
 ## Installation & Setup
 
-### 1. Clone Repository
+### 1. Clone the Repository
+
 ```bash
-git clone ...
+git clone <repository-url>
 cd inquira-ai
 ```
 
-### 2. Create Virtual Environment
+---
+
+### 2. Create a Virtual Environment
+
 ```bash
 python -m venv .venv
 ```
-### 3. Activate Virtual Environment
-Windows:
+
+---
+
+### 3. Activate the Virtual Environment
+
+**Windows**
+
 ```bash
 .venv\Scripts\activate
 ```
-Linux/macOS:
+
+**Linux / macOS**
+
 ```bash
 source .venv/bin/activate
 ```
+
+---
+
 ### 4. Install Dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
+---
+
 ### 5. Configure Environment Variables
+
+Create a local environment file:
+
 ```bash
 cp .env.example .env
 ```
-Fill in the required credentials inside .env:
-|Variable|Required|Description|
-|---|---|
-|GEMINI_API_KEY|Yes|Gemini API Key (Get free at https://aistudio.google.com/apikey)|
-|TAVILY_API_KEY|Yes|Tavily Search Key (Free tier at https://tavily.com)|
-|GEMINI_MODEL|No|Gemini model designation string|
 
-A note on free-tier model quotas: Gemini's per-model daily quotas vary significantly and change over time — some models are far more generous than others even within the same family. If you hit 429 RESOURCE_EXHAUSTED, check the quota dashboard linked in the error message and consider switching GEMINI_MODEL in .env to a model with more daily headroom; no code changes are needed, it's a plain string in the config.
+Update the required credentials in `.env`:
 
-### 6. Run Application
-```bash
-python run.py 
-```
+| Variable | Required | Description |
+|----------|:--------:|-------------|
+| `GEMINI_API_KEY` | ✅ | Gemini API Key (Get one free from https://aistudio.google.com/apikey) |
+| `TAVILY_API_KEY` | ✅ | Tavily Search API Key (Free tier available at https://tavily.com) |
+| `GEMINI_MODEL` | ❌ | Optional Gemini model identifier (defaults can be used if omitted) |
+
+> **Note:** Gemini free-tier quotas vary by model and may change over time. If you encounter a `429 RESOURCE_EXHAUSTED` error, check your available quota in Google AI Studio and consider switching the `GEMINI_MODEL` value in `.env` to another supported model with higher remaining quota. No code changes are required.
+
 ---
-## Example Report Structure
-When the research pipeline completes, the system compiles a multi-layered report based on the following structure:
 
-- Executive Summary
+### 6. Run the Application
 
-- Key Findings
+```bash
+python run.py
+```
 
-- Detailed Analysis
+Once the server starts, open your browser and navigate to:
 
-- Confidence / Contradictions Evaluation
+```text
+http://localhost:8000
+```
 
-- References
+---
 
-- Actionable Insights
+## Example Research Report
 
-![Dashboarr with reasearch report](images/image.png)
+After the autonomous research workflow completes, Inquira AI generates a structured, evidence-based report containing:
 
+- 📌 Executive Summary
+- 🔍 Key Findings
+- 📖 Detailed Analysis
+- 📊 Confidence Assessment & Contradictions
+- 🔗 References & Citations
+- 💡 Actionable Insights
+
+### Sample Output
+
+![Research Report Dashboard](images/image.png)
 ---
 
 ## API Endpoints
