@@ -74,7 +74,9 @@ Built with **LangGraph** as a `StateGraph`, not a linear chain. The planner's to
 ### Workflow
 
 ### Visual Diagram
+
 ![System_Workflow](images/Sustem_Workflow.png)
+
 #### Sub-question batching (the fix that mattered most)
 Early versions of this project only ever searched `sub_questions[0]`, silently discarding the rest of what the planner decomposed — a "compare 3 frameworks" query would only ever search framework #1, leaving the report with real, admitted gaps for the others. The fix: `tool_executor_node` tracks a `subquestion_offset` in graph state and searches a *batch* of sub-questions each pass (capped by `MAX_SUBQUESTIONS_PER_BATCH`, default 3). When the confidence-loop fires, the retry naturally searches the *next* batch — new information, not a repeat of the same query. Verified end-to-end: a 3-jurisdiction regulation query went from two "insufficient data" gaps and 0.30 confidence to full coverage of all three jurisdictions at 0.90 confidence, using the identical model and query, changing only this mechanism.
 
